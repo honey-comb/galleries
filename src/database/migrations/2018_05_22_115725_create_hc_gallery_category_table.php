@@ -29,6 +29,6 @@ class CreateHcGalleryCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gallery_category');
+        Schema::dropIfExists('hc_gallery_category');
     }
 }
