@@ -4,11 +4,79 @@
         "sequence": 0,
         "namespace": "HoneyComb\\Galleries\\"
     },
-    "formData": {},
-    "adminMenu": [],
+    "formData": {
+        "gallery.category": "HoneyComb\\Galleries\\Forms\\HCGalleryCategoryForm"
+    },
+    "adminMenu": [
+        {
+            "route": "admin.gallery.category.index",
+            "parent": "admin.index",
+            "translation": "HCGalleries::gallery_category.page_title",
+            "icon": "folder",
+            "aclPermission": "honey_comb_galleries_gallery_category_list"
+        },
+        {
+            "route": "admin.gallery.category.index",
+            "parent": "admin.index",
+            "translation": "HCGalleries::gallery_category.page_title",
+            "icon": "folder",
+            "aclPermission": "honey_comb_galleries_gallery_category_list"
+        },
+        {
+            "route": "admin.gallery.category.index",
+            "parent": "admin.index",
+            "translation": "HCGalleries::gallery_category.page_title",
+            "icon": "folder",
+            "aclPermission": "honey_comb_galleries_gallery_category_list"
+        },
+        {
+            "route": "admin.gallery.category.index",
+            "parent": "admin.index",
+            "translation": "HCGalleries::gallery_category.page_title",
+            "icon": "folder",
+            "aclPermission": "honey_comb_galleries_gallery_category_list"
+        },
+        {
+            "route": "admin.gallery.category.index",
+            "parent": "admin.index",
+            "translation": "HCGalleries::gallery_category.page_title",
+            "icon": "folder",
+            "aclPermission": "honey_comb_galleries_gallery_category",
+            "serviceName": "HCGalleryCategory"
+        },
+        {
+            "route": "admin.gallery.category.index",
+            "parent": "admin.index",
+            "translation": "HCGalleries::gallery_category.page_title",
+            "icon": "folder",
+            "aclPermission": "honey_comb_galleries_gallery_category_list"
+        },
+        {
+            "route": "admin.gallery.category.index",
+            "parent": "admin.index",
+            "translation": "HCGalleries::gallery_category.page_title",
+            "icon": "folder",
+            "aclPermission": "honey_comb_galleries_gallery_category_list"
+        }
+    ],
     "seeder": "",
-    "routes": [],
+    "routes": [
+        "Routes\/Admin\/routes.gallery.category.php"
+    ],
     "acl": {
-        "permissions": []
+        "permissions": [
+            {
+                "name": "acl.gallery.category",
+                "controller": "HoneyComb\\Galleries\\Http\\Controllers\\Admin\\HCGalleryCategoryController",
+                "actions": [
+                    "honey_comb_galleries_gallery_category_update",
+                    "honey_comb_galleries_gallery_category_create",
+                    "honey_comb_galleries_gallery_category_delete",
+                    "honey_comb_galleries_gallery_category_delete_force",
+                    "honey_comb_galleries_gallery_category_restore",
+                    "honey_comb_galleries_gallery_category_list"
+                ]
+            }
+        ]
     }
 }
