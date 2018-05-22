@@ -1,0 +1,14 @@
+{
+    "general": {
+        "packageName": "HCGalleries",
+        "sequence": 0,
+        "namespace": "HoneyComb\\Galleries\\"
+    },
+    "formData": {},
+    "adminMenu": [],
+    "seeder": "",
+    "routes": [],
+    "acl": {
+        "permissions": []
+    }
+}
