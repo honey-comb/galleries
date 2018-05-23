@@ -29,9 +29,6 @@ class CreateHCGalleryAssetTable extends Migration
             $table->text('description')->nullable();
             $table->text('copyright')->nullable();
 
-            $table->foreign('record_id')->references('id')->on('hc_gallery_category')
-                ->onUpdate('CASCADE')->onDelete('CASCADE');
-
             $table->foreign('gallery_id')->references('id')->on('hc_gallery')->onDelete('CASCADE');
             $table->foreign('resource_id')->references('id')->on('hc_resource')->onDelete('CASCADE');
             $table->foreign('added_by')->references('id')->on('hc_user')->onDelete('SET NULL');

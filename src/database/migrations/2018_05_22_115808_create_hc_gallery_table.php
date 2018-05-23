@@ -20,6 +20,8 @@ class CreateHcGalleryTable extends Migration
             $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->datetime('deleted_at')->nullable();
 
+            $table->datetime('published_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
             $table->string('label');
             $table->text('description');
 
@@ -32,6 +34,9 @@ class CreateHcGalleryTable extends Migration
             $table->boolean('show_titles')->default(1);
             $table->boolean('show_descriptions')->default(1);
             $table->boolean('hidden')->default(0);
+
+            $table->integer('views')->default(0);
+            $table->integer('imageViews')->default(0);
 
             $table->foreign('created_by')->references('id')->on('hc_user')->onDelete('SET NULL');
             $table->foreign('cover_id')->references('id')->on('hc_gallery_asset')->onDelete('SET NULL');
