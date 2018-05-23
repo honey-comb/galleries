@@ -39,7 +39,7 @@ class CreateHcGalleryTable extends Migration
             $table->integer('imageViews')->default(0);
 
             $table->foreign('created_by')->references('id')->on('hc_user')->onDelete('SET NULL');
-            $table->foreign('cover_id')->references('id')->on('hc_gallery_asset')->onDelete('SET NULL');
+            $table->foreign('cover_id')->references('id')->on('hc_resource')->onDelete('SET NULL');
         });
     }
 
