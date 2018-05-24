@@ -6,62 +6,27 @@
     },
     "formData": {
         "gallery.category": "HoneyComb\\Galleries\\Forms\\HCGalleryCategoryForm",
-        "gallery.tag": "HoneyComb\\Galleries\\Forms\\HCGalleryTagForm"
+        "gallery.tag": "HoneyComb\\Galleries\\Forms\\HCGalleryTagForm",
+        "gallery": "HoneyComb\\Galleries\\Forms\\HCGalleryForm"
     },
     "adminMenu": [
         {
-            "route": "admin.gallery.category.index",
+            "route": "admin.gallery.index",
             "parent": "admin.index",
-            "translation": "HCGalleries::gallery_category.page_title",
-            "icon": "folder",
-            "aclPermission": "honey_comb_galleries_gallery_category_list"
+            "translation": "HCGalleries::gallery.page_title",
+            "icon": "object-group",
+            "aclPermission": "honey_comb_galleries_gallery_list"
         },
         {
             "route": "admin.gallery.category.index",
-            "parent": "admin.index",
-            "translation": "HCGalleries::gallery_category.page_title",
-            "icon": "folder",
-            "aclPermission": "honey_comb_galleries_gallery_category_list"
-        },
-        {
-            "route": "admin.gallery.category.index",
-            "parent": "admin.index",
-            "translation": "HCGalleries::gallery_category.page_title",
-            "icon": "folder",
-            "aclPermission": "honey_comb_galleries_gallery_category_list"
-        },
-        {
-            "route": "admin.gallery.category.index",
-            "parent": "admin.index",
-            "translation": "HCGalleries::gallery_category.page_title",
-            "icon": "folder",
-            "aclPermission": "honey_comb_galleries_gallery_category_list"
-        },
-        {
-            "route": "admin.gallery.category.index",
-            "parent": "admin.index",
-            "translation": "HCGalleries::gallery_category.page_title",
-            "icon": "folder",
-            "aclPermission": "honey_comb_galleries_gallery_category",
-            "serviceName": "HCGalleryCategory"
-        },
-        {
-            "route": "admin.gallery.category.index",
-            "parent": "admin.index",
-            "translation": "HCGalleries::gallery_category.page_title",
-            "icon": "folder",
-            "aclPermission": "honey_comb_galleries_gallery_category_list"
-        },
-        {
-            "route": "admin.gallery.category.index",
-            "parent": "admin.index",
+            "parent": "admin.gallery.index",
             "translation": "HCGalleries::gallery_category.page_title",
             "icon": "folder",
             "aclPermission": "honey_comb_galleries_gallery_category_list"
         },
         {
             "route": "admin.gallery.tag.index",
-            "parent": "admin.index",
+            "parent": "admin.gallery.index",
             "translation": "HCGalleries::gallery_tag.page_title",
             "icon": "tags",
             "aclPermission": "honey_comb_galleries_gallery_tag_list"
@@ -70,7 +35,8 @@
     "seeder": "",
     "routes": [
         "Routes\/Admin\/routes.gallery.category.php",
-        "Routes\/Admin\/routes.gallery.tag.php"
+        "Routes\/Admin\/routes.gallery.tag.php",
+        "Routes\/Admin\/routes.gallery.php"
     ],
     "acl": {
         "permissions": [
@@ -96,6 +62,18 @@
                     "honey_comb_galleries_gallery_tag_delete_force",
                     "honey_comb_galleries_gallery_tag_restore",
                     "honey_comb_galleries_gallery_tag_list"
+                ]
+            },
+            {
+                "name": "acl.gallery",
+                "controller": "HoneyComb\\Galleries\\Http\\Controllers\\Admin\\HCGalleryController",
+                "actions": [
+                    "honey_comb_galleries_gallery_update",
+                    "honey_comb_galleries_gallery_create",
+                    "honey_comb_galleries_gallery_delete",
+                    "honey_comb_galleries_gallery_delete_force",
+                    "honey_comb_galleries_gallery_restore",
+                    "honey_comb_galleries_gallery_list"
                 ]
             }
         ]

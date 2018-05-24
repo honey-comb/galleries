@@ -1,0 +1,20 @@
+<?php
+return [
+    "page_title" => "Galerijos",
+    "published_at" => "Publikavimo data",
+    "label" => "Pavadinimas",
+    "description" => "Aprašymas",
+    "created_by" => "Sukurta",
+    "cover_id" => "Viršelis",
+    "warning_flag" => "Įspėjimas",
+    "warning_content" => "Įspėjimo aprašymas",
+    "show_titles" => "Rodyti pavadinimus",
+    "show_descriptions" => "Rodyti aprašymus",
+    "hidden" => "Paslėptas",
+    "views" => "Peržiūros",
+    "imageViews" => "Nuotraukų peržiūros",
+    "tags" => "Tagai",
+    "categories" => "Kategorijos",
+    "assets" => "Turinys",
+    "stats" => "Statistika",
+];

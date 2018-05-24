@@ -4,14 +4,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Galleries\Repositories;
 
-use HoneyComb\Galleries\Http\Requests\HCGalleryCategoryRequest;
-use HoneyComb\Galleries\Models\HCGalleryCategory;
+use HoneyComb\Galleries\Models\HCGallery;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
-use HoneyComb\Galleries\Models\HCGalleryCategoryTranslation;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
-use Illuminate\Support\Collection;
 
-class HCGalleryCategoryRepository extends HCBaseRepository
+class HCGalleryRepository extends HCBaseRepository
 {
     use HCQueryBuilderTrait;
 
@@ -20,15 +17,7 @@ class HCGalleryCategoryRepository extends HCBaseRepository
      */
     public function model(): string
     {
-        return HCGalleryCategory::class;
-    }
-
-    /**
-     * @return string
-     */
-    public function translationModel(): string
-    {
-        return HCGalleryCategoryTranslation::class;
+        return HCGallery::class;
     }
 
     /**
@@ -41,8 +30,7 @@ class HCGalleryCategoryRepository extends HCBaseRepository
         $records = $this->makeQuery()->whereIn('id', $ids)->get();
 
         foreach ($records as $record) {
-            /** @var HCGalleryCategory $record */
-            $record->translations()->delete();
+            /** @var HCGallery $record */
             $record->delete();
         }
     }
@@ -58,8 +46,7 @@ class HCGalleryCategoryRepository extends HCBaseRepository
         $records = $this->makeQuery()->withTrashed()->whereIn('id', $ids)->get();
 
         foreach ($records as $record) {
-            /** @var HCGalleryCategory $record */
-            $record->translations()->restore();
+            /** @var HCGallery $record */
             $record->restore();
         }
     }
@@ -76,23 +63,8 @@ class HCGalleryCategoryRepository extends HCBaseRepository
         $records = $this->makeQuery()->withTrashed()->whereIn('id', $ids)->get();
 
         foreach ($records as $record) {
-            /** @var HCGalleryCategory $record */
-            $record->translations()->forceDelete();
+            /** @var HCGallery $record */
             $record->forceDelete();
         }
-    }
-
-    /**
-     * @param \HoneyComb\Galleries\Http\Requests\HCGalleryCategoryRequest $request
-     * @return \Illuminate\Support\Collection
-     */
-    public function getOptions(HCGalleryCategoryRequest $request): Collection
-    {
-        return $this->createBuilderQuery($request)->get()->map(function($record) {
-            return [
-                'id' => $record->id,
-                'label' => $record->translation->label,
-            ];
-        });
     }
 }

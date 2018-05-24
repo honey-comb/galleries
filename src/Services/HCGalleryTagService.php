@@ -29,4 +29,27 @@ class HCGalleryTagService
     {
         return $this->repository;
     }
+
+    /**
+     * @param array $tags
+     * @return array
+     */
+    public function createFromRequest(array $tags)
+    {
+        $tagIds = [];
+
+        foreach ($tags as $tag) {
+
+            if (isset($tag['className'])) {
+                $tag['id'] = str_slug($tag['label']);
+
+                $tag = array_only($tag, ['id', 'label']);
+                $tag = $this->getRepository()->updateOrCreate($tag)->toArray();
+            }
+
+            $tagIds[] = $tag['id'];
+        }
+
+        return $tagIds;
+    }
 }

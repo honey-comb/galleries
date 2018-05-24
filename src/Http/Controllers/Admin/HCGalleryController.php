@@ -4,23 +4,25 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Galleries\Http\Controllers\Admin;
 
-use HoneyComb\Galleries\Services\HCGalleryCategoryService;
-use HoneyComb\Galleries\Http\Requests\HCGalleryCategoryRequest;
-use HoneyComb\Galleries\Models\HCGalleryCategory;
+use HoneyComb\Galleries\Services\HCGalleryService;
+use HoneyComb\Galleries\Http\Requests\HCGalleryRequest;
+use HoneyComb\Galleries\Models\HCGallery;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
+use HoneyComb\Galleries\Services\HCGalleryTagService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
-class HCGalleryCategoryController extends HCBaseController
+class HCGalleryController extends HCBaseController
 {
     use HCAdminListHeaders;
 
     /**
-     * @var HCGalleryCategoryService
+     * @var HCGalleryService
      */
     protected $service;
 
@@ -33,18 +35,28 @@ class HCGalleryCategoryController extends HCBaseController
      * @var HCFrontendResponse
      */
     private $response;
+    /**
+     * @var \HoneyComb\Galleries\Services\HCGalleryTagService
+     */
+    private $galleryTagService;
 
     /**
-     * HCGalleryCategoryController constructor.
+     * HCGalleryController constructor.
      * @param Connection $connection
      * @param HCFrontendResponse $response
-     * @param HCGalleryCategoryService $service
+     * @param HCGalleryService $service
+     * @param \HoneyComb\Galleries\Services\HCGalleryTagService $galleryTagService
      */
-    public function __construct(Connection $connection, HCFrontendResponse $response, HCGalleryCategoryService $service)
-    {
+    public function __construct(
+        Connection $connection,
+        HCFrontendResponse $response,
+        HCGalleryService $service,
+        HCGalleryTagService $galleryTagService
+    ) {
         $this->connection = $connection;
         $this->response = $response;
         $this->service = $service;
+        $this->galleryTagService = $galleryTagService;
     }
 
     /**
@@ -55,11 +67,11 @@ class HCGalleryCategoryController extends HCBaseController
     public function index(): View
     {
         $config = [
-            'title' => trans('HCGalleries::gallery_category.page_title'),
-            'url' => route('admin.api.gallery.category'),
-            'form' => route('admin.api.form-manager', ['gallery.category']),
+            'title' => trans('HCGalleries::gallery.page_title'),
+            'url' => route('admin.api.gallery'),
+            'form' => route('admin.api.form-manager', ['gallery']),
             'headers' => $this->getTableColumns(),
-            'actions' => $this->getActions('honey_comb_galleries_gallery_category'),
+            'actions' => $this->getActions('honey_comb_galleries_gallery'),
         ];
 
         return view('HCCore::admin.service.index', ['config' => $config]);
@@ -73,7 +85,11 @@ class HCGalleryCategoryController extends HCBaseController
     public function getTableColumns(): array
     {
         $columns = [
-            'translation.label' => $this->headerText(trans('HCGalleries::gallery_category.label')),
+            'cover_id' => $this->headerImage(trans('HCGalleries::gallery.cover_id')),
+            'published_at' => $this->headerText(trans('HCGalleries::gallery.published_at')),
+            'label' => $this->headerText(trans('HCGalleries::gallery.label')),
+            'views' => $this->headerText(trans('HCGalleries::gallery.views')),
+            'imageViews' => $this->headerText(trans('HCGalleries::gallery.imageViews')),
         ];
 
         return $columns;
@@ -81,19 +97,26 @@ class HCGalleryCategoryController extends HCBaseController
 
     /**
      * @param string $id
-     * @return \HoneyComb\Galleries\Models\HCGalleryCategory|\HoneyComb\Galleries\Repositories\HCGalleryCategoryRepository|\Illuminate\Database\Eloquent\Model|null
+     * @return \HoneyComb\Galleries\Models\HCGallery|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
     public function getById(string $id)
     {
-        return $this->service->getRepository()->findOneBy(['id' => $id]);
+        return $this->service->getRepository()->makeQuery()->with(
+            [
+                'author' => function(HasOne $builder) {
+                    $builder->select('id', 'name as label');
+                },
+                'creator',
+                'tags',
+            ])->find($id);
     }
 
     /**
      * Creating data list
-     * @param HCGalleryCategoryRequest $request
+     * @param HCGalleryRequest $request
      * @return JsonResponse
      */
-    public function getListPaginate(HCGalleryCategoryRequest $request): JsonResponse
+    public function getListPaginate(HCGalleryRequest $request): JsonResponse
     {
         return response()->json(
             $this->service->getRepository()->getListPaginate($request)
@@ -103,18 +126,18 @@ class HCGalleryCategoryController extends HCBaseController
     /**
      * Create record
      *
-     * @param HCGalleryCategoryRequest $request
+     * @param HCGalleryRequest $request
      * @return JsonResponse
      * @throws \Throwable
      */
-    public function store(HCGalleryCategoryRequest $request): JsonResponse
+    public function store(HCGalleryRequest $request): JsonResponse
     {
         $this->connection->beginTransaction();
 
         try {
-            /** @var HCGalleryCategory $model */
+            /** @var HCGallery $model */
             $model = $this->service->getRepository()->create($request->getRecordData());
-            $model->updateTranslations($request->getTranslations());
+            $model->tags()->sync($this->galleryTagService->createFromRequest($request->getTags()));
 
             $this->connection->commit();
         } catch (\Throwable $e) {
@@ -130,16 +153,16 @@ class HCGalleryCategoryController extends HCBaseController
     /**
      * Update record
      *
-     * @param HCGalleryCategoryRequest $request
+     * @param HCGalleryRequest $request
      * @param string $id
      * @return JsonResponse
      */
-    public function update(HCGalleryCategoryRequest $request, string $id): JsonResponse
+    public function update(HCGalleryRequest $request, string $id): JsonResponse
     {
-        /** @var HCGalleryCategory $model */
+        /** @var HCGallery $model */
         $model = $this->service->getRepository()->findOneBy(['id' => $id]);
         $model->update($request->getRecordData());
-        $model->updateTranslations($request->getTranslations());
+        $model->tags()->sync($this->galleryTagService->createFromRequest($request->getTags()));
 
         return $this->response->success("Created");
     }
@@ -148,11 +171,11 @@ class HCGalleryCategoryController extends HCBaseController
     /**
      * Soft delete record
      *
-     * @param HCGalleryCategoryRequest $request
+     * @param HCGalleryRequest $request
      * @return JsonResponse
      * @throws \Throwable
      */
-    public function deleteSoft(HCGalleryCategoryRequest $request): JsonResponse
+    public function deleteSoft(HCGalleryRequest $request): JsonResponse
     {
         $this->connection->beginTransaction();
 
@@ -173,11 +196,11 @@ class HCGalleryCategoryController extends HCBaseController
     /**
      * Restore record
      *
-     * @param HCGalleryCategoryRequest $request
+     * @param HCGalleryRequest $request
      * @return JsonResponse
      * @throws \Throwable
      */
-    public function restore(HCGalleryCategoryRequest $request): JsonResponse
+    public function restore(HCGalleryRequest $request): JsonResponse
     {
         $this->connection->beginTransaction();
 
@@ -198,11 +221,11 @@ class HCGalleryCategoryController extends HCBaseController
     /**
      * Force delete record
      *
-     * @param HCGalleryCategoryRequest $request
+     * @param HCGalleryRequest $request
      * @return JsonResponse
      * @throws \Throwable
      */
-    public function deleteForce(HCGalleryCategoryRequest $request): JsonResponse
+    public function deleteForce(HCGalleryRequest $request): JsonResponse
     {
         $this->connection->beginTransaction();
 
@@ -218,17 +241,5 @@ class HCGalleryCategoryController extends HCBaseController
 
         return $this->response->success('Successfully deleted');
     }
-
-    /**
-     * @param \HoneyComb\Galleries\Http\Requests\HCGalleryCategoryRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getOptions(HCGalleryCategoryRequest $request): JsonResponse
-    {
-        return response()->json(
-            $this->service->getRepository()->getOptions($request)
-        );
-    }
-
 
 }
