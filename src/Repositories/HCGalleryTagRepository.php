@@ -4,9 +4,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Galleries\Repositories;
 
+use HoneyComb\Galleries\Http\Requests\HCGalleryTagRequest;
 use HoneyComb\Galleries\Models\HCGalleryTag;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
+use Illuminate\Support\Collection;
 
 class HCGalleryTagRepository extends HCBaseRepository
 {
@@ -66,5 +68,19 @@ class HCGalleryTagRepository extends HCBaseRepository
             /** @var HCGalleryTag $record */
             $record->forceDelete();
         }
+    }
+
+    /**
+     * @param \HoneyComb\Galleries\Http\Requests\HCGalleryTagRequest $request
+     * @return \Illuminate\Support\Collection
+     */
+    public function getOptions(HCGalleryTagRequest $request): Collection
+    {
+        return $this->createBuilderQuery($request)->get()->map(function ($record) {
+            return [
+                'id' => $record->id,
+                'label' => $record->id
+            ];
+        });
     }
 }

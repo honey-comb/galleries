@@ -13,6 +13,7 @@ use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class HCGalleryTagController extends HCBaseController
@@ -214,6 +215,17 @@ class HCGalleryTagController extends HCBaseController
         }
 
         return $this->response->success('Successfully deleted');
+    }
+
+    /**
+     * @param \HoneyComb\Galleries\Http\Requests\HCGalleryTagRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOptions(HCGalleryTagRequest $request): JsonResponse
+    {
+        return response()->json(
+            $this->service->getRepository()->getOptions($request)
+        );
     }
 
 }

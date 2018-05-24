@@ -46,6 +46,9 @@ Route::prefix(config('hc.admin_url'))
                 ->name('admin.api.gallery.tag.list')
                 ->middleware('acl:honey_comb_galleries_gallery_tag_admin_list');
 
+            Route::get('options', 'HCGalleryTagController@getOptions')
+                ->name('admin.api.gallery.tag.options');
+
             Route::post('/', 'HCGalleryTagController@store')
                 ->name('admin.api.gallery.tag.create')
                 ->middleware('acl:honey_comb_galleries_gallery_tag_admin_create');
