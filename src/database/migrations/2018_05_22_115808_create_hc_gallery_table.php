@@ -23,8 +23,9 @@ class CreateHcGalleryTable extends Migration
             $table->datetime('published_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->string('label');
-            $table->text('description');
+            $table->text('description')->nullable();
 
+            $table->uuid('author_id')->nullable();
             $table->uuid('created_by')->nullable();
             $table->uuid('cover_id')->nullable();
 
@@ -40,6 +41,7 @@ class CreateHcGalleryTable extends Migration
 
             $table->foreign('created_by')->references('id')->on('hc_user')->onDelete('SET NULL');
             $table->foreign('cover_id')->references('id')->on('hc_resource')->onDelete('SET NULL');
+            $table->foreign('author_id')->references('id')->on('hc_resource_author')->onDelete('SET NULL');
         });
     }
 
