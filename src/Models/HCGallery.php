@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Galleries\Models;
 
+use HoneyComb\Resources\Models\HCResource;
 use HoneyComb\Resources\Models\HCResourceAuthor;
 use HoneyComb\Starter\Models\HCUuidModel;
 use HoneyComb\Starter\Models\Traits\CreatedByTrait;
@@ -91,6 +92,14 @@ class HCGallery extends HCUuidModel
     {
         return $this->belongsToMany(HCGalleryTag::class, HCGalleryTagConnection::getTableName(), 'gallery_id',
             'tag_id');
+    }
+
+    /**
+     *
+     */
+    public function assets ()
+    {
+        return $this->belongsToMany(HCResource::class, HCGalleryAsset::getTableName(), 'gallery_id', 'resource_id');
     }
 
 }

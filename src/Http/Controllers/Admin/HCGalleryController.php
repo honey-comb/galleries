@@ -108,6 +108,7 @@ class HCGalleryController extends HCBaseController
                 },
                 'creator',
                 'tags',
+                'assets'
             ])->find($id);
     }
 
