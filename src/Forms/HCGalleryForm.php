@@ -191,8 +191,8 @@ class HCGalleryForm extends HCBaseForm
                 'uploadUrl' => route('resource.upload'),
                 'viewUrl' => route('resource.get', '/'),
                 'editUrl' => route('admin.api.form-manager', ['resource-edit']),
-                'width' => 260,
-                'height' => 260,
+                'width' => 250,
+                'height' => 250,
                 'count' => 999999,
             ];
 
