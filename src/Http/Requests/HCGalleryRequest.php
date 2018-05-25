@@ -114,6 +114,6 @@ class HCGalleryRequest extends FormRequest
      */
     public function getTags(): array
     {
-        return $this->get('tags');
+        return $this->get('tags', []);
     }
 }
