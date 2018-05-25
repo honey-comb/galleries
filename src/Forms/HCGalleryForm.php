@@ -95,7 +95,6 @@ class HCGalleryForm extends HCBaseForm
                     'type' => 'dateTimePicker',
                     'showTime' => true,
                     'label' => trans('HCGalleries::gallery.published_at'),
-                    'required' => 1,
                 ],
             $prefix . 'description' =>
                 [
