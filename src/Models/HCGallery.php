@@ -62,6 +62,7 @@ class HCGallery extends HCUuidModel
         'updated_at',
         'published_at',
         'label',
+        'slug',
         'description',
         'author_id',
         'created_by',
