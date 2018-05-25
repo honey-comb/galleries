@@ -32,6 +32,13 @@
             "Tests\\": "tests/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "HoneyComb\\Galleries\\Providers\\HCGalleriesServiceProvider"
+            ]
+        }
+    },
     "scripts": {
         "test": [
             "paratest -p4 --colors"
