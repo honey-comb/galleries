@@ -58,6 +58,8 @@ class HCGallery extends HCUuidModel
      */
     protected $fillable = [
         'id',
+        'created_at',
+        'updated_at',
         'published_at',
         'label',
         'description',
@@ -88,6 +90,9 @@ class HCGallery extends HCUuidModel
         return $this->hasOne(HCResourceAuthor::class, 'id', 'author_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tags()
     {
         return $this->belongsToMany(HCGalleryTag::class, HCGalleryTagConnection::getTableName(), 'gallery_id',
