@@ -33,6 +33,8 @@ use HoneyComb\Resources\Models\HCResource;
 use HoneyComb\Resources\Models\HCResourceAuthor;
 use HoneyComb\Starter\Models\HCUuidModel;
 use HoneyComb\Starter\Models\Traits\CreatedByTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
@@ -83,6 +85,10 @@ class HCGallery extends HCUuidModel
 
     ];
 
+    protected $appends = [
+        'count',
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -101,11 +107,34 @@ class HCGallery extends HCUuidModel
     }
 
     /**
+     * Assets
      *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function assets ()
+    public function assets(): BelongsToMany
     {
         return $this->belongsToMany(HCResource::class, HCGalleryAsset::getTableName(), 'gallery_id', 'resource_id');
+    }
+
+    /**
+     * Getting assets count
+     *
+     * @return int
+     */
+    public function getCountAttribute(): int
+    {
+        return sizeof($this->assets->toArray());
+    }
+
+    /**
+     * Getting categories
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function categories(): HasMany
+    {
+        return $this->belongsToMany(HCGalleryCategory::class, HCGalleryCategoryConnection::getTableName(), 'gallery_id',
+            'category_id');
     }
 
 }
