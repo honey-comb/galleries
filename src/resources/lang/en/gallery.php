@@ -17,4 +17,5 @@ return [
     "categories" => "Categories",
     "assets" => "Assets",
     "stats" => "Stats",
+    "count" => "Count",
 ];

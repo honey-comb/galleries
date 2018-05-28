@@ -17,4 +17,5 @@ return [
     "categories" => "Kategorijos",
     "assets" => "Turinys",
     "stats" => "Statistika",
+    "count" => "Nuotraukos",
 ];
