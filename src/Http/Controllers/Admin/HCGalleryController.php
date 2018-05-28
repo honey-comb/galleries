@@ -71,10 +71,51 @@ class HCGalleryController extends HCBaseController
             'url' => route('admin.api.gallery'),
             'form' => route('admin.api.form-manager', ['gallery']),
             'headers' => $this->getTableColumns(),
-            'actions' => $this->getActions('honey_comb_galleries_gallery'),
+            'actions' => $this->getActions('honey_comb_galleries_gallery', [
+                /*'_update',*/
+                '_delete',
+                '_restore',
+                '_force_delete',
+                '_merge',
+                '_clone',
+            ]),
+            'type' => 'gallery',
+            'options' => [
+                'separatePage' => true,
+            ],
         ];
 
         return view('HCCore::admin.service.index', ['config' => $config]);
+    }
+
+    /**
+     * @param \HoneyComb\Galleries\Http\Requests\HCGalleryRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(HCGalleryRequest $request)
+    {
+        $config = [
+            'title' => trans('HCGalleries::gallery.page_title'),
+            'url' => route('admin.api.form-manager', 'gallery-new'),
+        ];
+
+        return view('HCCore::admin.service.record', ['config' => $config]);
+    }
+
+    /**
+     * @param \HoneyComb\Galleries\Http\Requests\HCGalleryRequest $request
+     * @param string $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(HCGalleryRequest $request, string $id)
+    {
+        $config = [
+            'title' => trans('HCGalleries::gallery.page_title'),
+            'url' => route('admin.api.form-manager', 'gallery-edit'),
+            'recordId' => $id,
+        ];
+
+        return view('HCCore::admin.service.record', ['config' => $config]);
     }
 
     /**
@@ -85,11 +126,12 @@ class HCGalleryController extends HCBaseController
     public function getTableColumns(): array
     {
         $columns = [
-            'cover_id' => $this->headerImage(trans('HCGalleries::gallery.cover_id')),
-            'published_at' => $this->headerText(trans('HCGalleries::gallery.published_at')),
-            'label' => $this->headerText(trans('HCGalleries::gallery.label')),
-            'views' => $this->headerText(trans('HCGalleries::gallery.views')),
-            'imageViews' => $this->headerText(trans('HCGalleries::gallery.imageViews')),
+            'cover_id' => $this->headerImage(trans('HCGalleries::gallery.cover_id'), 200, 134),
+            'label' => $this->headerHtml(''),
+            'published_at' => $this->headerDate(trans('HCGalleries::gallery.published_at')),
+            'views' => $this->headerHtml(trans('HCGalleries::gallery.views')),
+            'imageViews' => $this->headerHtml(trans('HCGalleries::gallery.imageViews')),
+            'count' => $this->headerHtml(trans('HCGalleries::gallery.count')),
         ];
 
         return $columns;
@@ -108,7 +150,8 @@ class HCGalleryController extends HCBaseController
                 },
                 'creator',
                 'tags',
-                'assets'
+                'assets',
+                'categories',
             ])->find($id);
     }
 
@@ -120,7 +163,7 @@ class HCGalleryController extends HCBaseController
     public function getListPaginate(HCGalleryRequest $request): JsonResponse
     {
         return response()->json(
-            $this->service->getRepository()->getListPaginate($request)
+            $this->service->getRepository()->getListPaginate($request, ['tags', 'categories'])
         );
     }
 
@@ -163,6 +206,7 @@ class HCGalleryController extends HCBaseController
         /** @var HCGallery $model */
         $model = $this->service->getRepository()->findOneBy(['id' => $id]);
         $model->update($request->getRecordData());
+        $model->assets()->sync($request->getAssets());
         $model->tags()->sync($this->galleryTagService->createFromRequest($request->getTags()));
 
         return $this->response->success("Created");

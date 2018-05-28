@@ -32,9 +32,20 @@ Route::prefix(config('hc.admin_url'))
     ->middleware(['web', 'auth'])
     ->group(function() {
 
-        Route::get('gallery', 'HCGalleryController@index')
-            ->name('admin.gallery.index')
-            ->middleware('acl:honey_comb_galleries_gallery_admin_list');
+        Route::prefix('gallery')->group(function() {
+
+            Route::get('/', 'HCGalleryController@index')
+                ->name('admin.gallery.index')
+                ->middleware('acl:honey_comb_galleries_gallery_admin_list');
+
+            Route::get('/create', 'HCGalleryController@create')
+                ->name('admin.api.gallery.create')
+                ->middleware('acl:honey_comb_galleries_gallery_admin_create');
+
+            Route::get('/edit/{id}', 'HCGalleryController@edit')
+                ->name('admin.api.gallery.edit')
+                ->middleware('acl:honey_comb_galleries_gallery_admin_update');
+        });
 
         Route::prefix('api/gallery')->group(function() {
 

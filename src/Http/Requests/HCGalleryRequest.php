@@ -115,6 +115,32 @@ class HCGalleryRequest extends FormRequest
      */
     public function getTags(): array
     {
-        return $this->get('tags', []);
+        return $this->getAsEmptyArray('tags');;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAssets()
+    {
+        $assets = $this->getAsEmptyArray('assets');
+        $sequenced = [];
+
+        foreach ($assets as $key => $asset) {
+            $sequenced[$asset] = ['sequence' => $key];
+        }
+
+        return $sequenced;
+    }
+
+    private function getAsEmptyArray(string $key)
+    {
+        $value = $this->get($key, []);
+
+        if ($value == null) {
+            $value = [];
+        }
+
+        return $value;
     }
 }
