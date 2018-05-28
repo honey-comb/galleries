@@ -131,7 +131,7 @@ class HCGallery extends HCUuidModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function categories(): HasMany
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(HCGalleryCategory::class, HCGalleryCategoryConnection::getTableName(), 'gallery_id',
             'category_id');
