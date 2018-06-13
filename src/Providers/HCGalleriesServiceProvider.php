@@ -62,16 +62,4 @@ class HCGalleriesServiceProvider extends HCBaseServiceProvider
      * @var string
      */
     protected $packageName = 'HCGalleries';
-
-    /**
-     * Registering assets
-     */
-    protected function registerPublishes(): void
-    {
-        parent::registerPublishes();
-
-        $this->publishes([
-            $this->packagePath('resources/assets') => resource_path('assets/honey-comb'),
-        ], 'hc-assets');
-    }
 }
