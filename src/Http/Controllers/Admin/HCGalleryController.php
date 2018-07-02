@@ -190,7 +190,9 @@ class HCGalleryController extends HCBaseController
             return $this->response->error($e->getMessage());
         }
 
-        return $this->response->success("Created");
+        $request->session()->flash('success-message', trans('HCStarter::core.created', ['name' => $request->name]));
+
+        return $this->response->success('', null, route('admin.gallery.index'));
     }
 
 
@@ -203,13 +205,21 @@ class HCGalleryController extends HCBaseController
      */
     public function update(HCGalleryRequest $request, string $id): JsonResponse
     {
-        /** @var HCGallery $model */
-        $model = $this->service->getRepository()->findOneBy(['id' => $id]);
-        $model->update($request->getRecordData());
-        $model->assets()->sync($request->getAssets());
-        $model->tags()->sync($this->galleryTagService->createFromRequest($request->getTags()));
+        try {
+            /** @var HCGallery $model */
+            $model = $this->service->getRepository()->findOneBy(['id' => $id]);
+            $model->update($request->getRecordData());
+            $model->assets()->sync($request->getAssets());
+            $model->tags()->sync($this->galleryTagService->createFromRequest($request->getTags()));
+        } catch (\Throwable $e) {
+            $this->connection->rollBack();
 
-        return $this->response->success("Created");
+            return $this->response->error($e->getMessage());
+        }
+        
+        $request->session()->flash('success-message', trans('HCStarter::core.updated', ['name' => $request->name]));
+
+        return $this->response->success('', null, route('admin.gallery.index'));
     }
 
 
