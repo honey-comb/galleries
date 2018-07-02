@@ -4,9 +4,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Galleries\Repositories;
 
+use HoneyComb\Galleries\Http\Requests\HCGalleryRequest;
 use HoneyComb\Galleries\Models\HCGallery;
 use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
+use Illuminate\Support\Collection;
 
 class HCGalleryRepository extends HCBaseRepository
 {
@@ -66,5 +68,14 @@ class HCGalleryRepository extends HCBaseRepository
             /** @var HCGallery $record */
             $record->forceDelete();
         }
+    }
+
+    /**
+     * @param \HoneyComb\Core\Http\Requests\Admin\HCUserRequest $request
+     * @return \Illuminate\Support\Collection
+     */
+    public function getOptions(HCGalleryRequest $request): Collection
+    {
+        return $this->createBuilderQuery($request)->select('id', 'label', 'total', 'cover_id')->get();
     }
 }

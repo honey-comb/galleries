@@ -168,6 +168,18 @@ class HCGalleryController extends HCBaseController
     }
 
     /**
+     * Creating data list
+     * @param HCGalleryRequest $request
+     * @return JsonResponse
+     */
+    public function getOptions(HCGalleryRequest $request): JsonResponse
+    {
+        return response()->json(
+            $this->service->getRepository()->getOptions($request, ['tags', 'categories'])
+        );
+    }
+
+    /**
      * Create record
      *
      * @param HCGalleryRequest $request

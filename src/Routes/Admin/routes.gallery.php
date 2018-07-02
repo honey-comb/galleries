@@ -53,9 +53,8 @@ Route::prefix(config('hc.admin_url'))
                 ->name('admin.api.gallery')
                 ->middleware('acl:honey_comb_galleries_gallery_admin_list');
 
-            Route::get('list', 'HCGalleryController@getList')
-                ->name('admin.api.gallery.list')
-                ->middleware('acl:honey_comb_galleries_gallery_admin_list');
+            Route::get('/options', 'HCGalleryController@getOptions')
+                ->name('admin.api.gallery.options');
 
             Route::post('/', 'HCGalleryController@store')
                 ->name('admin.api.gallery.create')
