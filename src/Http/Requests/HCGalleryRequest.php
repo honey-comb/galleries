@@ -43,6 +43,7 @@ class HCGalleryRequest extends FormRequest
         $data = $this->all();
         $data['author_id'] = $this->has('author') ? $this->get('author')['id'] : null;
         $data['slug'] = generateHCSlug('hc-gallery', $this->get('label'));
+        $data['total'] = sizeof($this->input('assets'));
 
         return $data;
     }

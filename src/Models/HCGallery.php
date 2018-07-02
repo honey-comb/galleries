@@ -76,17 +76,7 @@ class HCGallery extends HCUuidModel
         'hidden',
         'views',
         'imageViews',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $with = [
-
-    ];
-
-    protected $appends = [
-        'count',
+        'total',
     ];
 
     /**
@@ -114,16 +104,6 @@ class HCGallery extends HCUuidModel
     public function assets(): BelongsToMany
     {
         return $this->belongsToMany(HCResource::class, HCGalleryAsset::getTableName(), 'gallery_id', 'resource_id');
-    }
-
-    /**
-     * Getting assets count
-     *
-     * @return int
-     */
-    public function getCountAttribute(): int
-    {
-        return sizeof($this->assets->toArray());
     }
 
     /**

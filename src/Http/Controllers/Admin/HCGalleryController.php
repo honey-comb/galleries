@@ -131,7 +131,7 @@ class HCGalleryController extends HCBaseController
             'published_at' => $this->headerDate(trans('HCGalleries::gallery.published_at')),
             'views' => $this->headerHtml(trans('HCGalleries::gallery.views')),
             'imageViews' => $this->headerHtml(trans('HCGalleries::gallery.imageViews')),
-            'count' => $this->headerHtml(trans('HCGalleries::gallery.count')),
+            'total' => $this->headerHtml(trans('HCGalleries::gallery.count')),
         ];
 
         return $columns;
