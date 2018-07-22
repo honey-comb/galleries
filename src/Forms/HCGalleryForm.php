@@ -108,6 +108,7 @@ class HCGalleryForm extends HCBaseForm
                     'type' => 'media',
                     'label' => trans('HCGalleries::gallery.cover_id'),
                     'uploadUrl' => route('resource.upload'),
+                    'libraryUrl' => route('admin.api.resource.options'),
                     'viewUrl' => route('resource.get', '/'),
                     'editUrl' => route('admin.api.form-manager', ['resource-edit']),
                     'count' => 1,
