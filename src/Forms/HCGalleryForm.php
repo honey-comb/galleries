@@ -111,6 +111,7 @@ class HCGalleryForm extends HCBaseForm
                     'libraryUrl' => route('admin.api.resource.options'),
                     'viewUrl' => route('resource.get', '/'),
                     'editUrl' => route('admin.api.form-manager', ['resource-edit']),
+                    'newUrl' => route('admin.api.form-manager', ['resource-new']),
                     'count' => 1,
                 ],
             $prefix . 'categories' => [
@@ -191,8 +192,8 @@ class HCGalleryForm extends HCBaseForm
                 'uploadUrl' => route('resource.upload'),
                 'viewUrl' => route('resource.get', '/'),
                 'editUrl' => route('admin.api.form-manager', ['resource-edit']),
-                'width' => 250,
-                'height' => 250,
+                'width' => 220,
+                'height' => 220,
                 'count' => 999999,
             ];
 

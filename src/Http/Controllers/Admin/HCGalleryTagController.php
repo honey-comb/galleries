@@ -74,8 +74,8 @@ class HCGalleryTagController extends HCBaseController
     public function getTableColumns(): array
     {
         $columns = [
-            'label' => $this->headerText(trans('HCGalleries::gallery_tag.label')),
             'id' => $this->headerText(trans('HCGalleries::gallery_tag.slug')),
+            'label' => $this->headerText(trans('HCGalleries::gallery_tag.label')),
         ];
 
         return $columns;

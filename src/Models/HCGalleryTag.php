@@ -42,7 +42,7 @@ class HCGalleryTag extends HCUuidModel
      *
      * @var string
      */
-    protected $table = 'hc_gallery_tag';
+    protected $table = 'hc_resource_tag';
 
     /**
      * The attributes that are mass assignable.

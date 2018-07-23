@@ -1,6 +1,6 @@
 <?php
 return [
-    "page_title" => "Tagai",
+    "page_title" => "Žymė",
     "label" => "Pavadinimas",
-    "slug" => "Slug'as",
+    "id" => "Slug",
 ];
