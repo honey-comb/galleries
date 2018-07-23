@@ -85,6 +85,7 @@ class HCGalleryForm extends HCBaseForm
                 [
                     'tab' => trans('HCCore::core.general'),
                     'type' => 'dropDownSearchable',
+                    'required' => true,
                     'label' => trans('HCResource::resource.author'),
                     'new' => route('admin.api.form-manager', ['resource.author-new']),
                     'searchUrl' => route('admin.api.resource.author.options'),
@@ -114,21 +115,23 @@ class HCGalleryForm extends HCBaseForm
                     'newUrl' => route('admin.api.form-manager', ['resource-new']),
                     'count' => 1,
                 ],
-            $prefix . 'categories' => [
-                'tab' => trans('HCCore::core.general'),
-                'type' => 'dropDownSearchable',
-                'label' => trans('HCGalleries::gallery.categories'),
-                'new' => route('admin.api.form-manager', ['gallery.category-new']),
-                'searchUrl' => route('admin.api.gallery.category.options'),
-            ],
-            $prefix . 'tags' => [
-                'tab' => trans('HCCore::core.general'),
-                'type' => 'dropDownSearchable',
-                'creatable' => true,
-                'multi' => true,
-                'label' => trans('HCGalleries::gallery.tags'),
-                'searchUrl' => route('admin.api.gallery.tag.options'),
-            ],
+            $prefix . 'categories' =>
+                [
+                    'tab' => trans('HCCore::core.general'),
+                    'type' => 'dropDownSearchable',
+                    'label' => trans('HCGalleries::gallery.categories'),
+                    'new' => route('admin.api.form-manager', ['gallery.category-new']),
+                    'searchUrl' => route('admin.api.gallery.category.options'),
+                ],
+            $prefix . 'tags' =>
+                [
+                    'tab' => trans('HCCore::core.general'),
+                    'type' => 'dropDownSearchable',
+                    'creatable' => true,
+                    'multi' => true,
+                    'label' => trans('HCGalleries::gallery.tags'),
+                    'searchUrl' => route('admin.api.gallery.tag.options'),
+                ],
             $prefix . 'warning_flag' =>
                 [
                     'tab' => trans('HCCore::core.general'),
@@ -143,8 +146,8 @@ class HCGalleryForm extends HCBaseForm
                     'type' => 'textArea',
                     'label' => trans('HCGalleries::gallery.warning_content'),
                     'dependencies' => [
-                        $prefix . 'warning_flag' => ['1']
-                    ]
+                        $prefix . 'warning_flag' => ['1'],
+                    ],
                 ],
             $prefix . 'show_titles' =>
                 [
@@ -195,6 +198,14 @@ class HCGalleryForm extends HCBaseForm
                 'width' => 220,
                 'height' => 220,
                 'count' => 999999,
+                'dependencies' => [
+                    $prefix . 'author' => [
+                        'sendAs' => 'author_id'
+                    ],
+                    $prefix . 'description' => [
+                        'sendAs' => 'translation.description'
+                    ]
+                ]
             ];
 
         $form[$prefix . 'views'] =
