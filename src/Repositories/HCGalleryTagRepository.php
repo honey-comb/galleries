@@ -6,7 +6,7 @@ namespace HoneyComb\Galleries\Repositories;
 
 use HoneyComb\Galleries\Http\Requests\HCGalleryTagRequest;
 use HoneyComb\Galleries\Models\HCGalleryTag;
-use HoneyComb\Core\Repositories\Traits\HCQueryBuilderTrait;
+use HoneyComb\Starter\Repositories\Traits\HCQueryBuilderTrait;
 use HoneyComb\Starter\Repositories\HCBaseRepository;
 use Illuminate\Support\Collection;
 
