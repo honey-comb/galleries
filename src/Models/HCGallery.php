@@ -77,6 +77,7 @@ class HCGallery extends HCUuidModel
         'views',
         'imageViews',
         'total',
+        'media_name',
     ];
 
     /**

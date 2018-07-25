@@ -105,6 +105,16 @@ class HCGalleryForm extends HCBaseForm
                     'label' => trans('HCGalleries::gallery.description'),
                     'required' => 1,
                 ],
+            $prefix . 'tags' =>
+                [
+                    'tab' => trans('HCCore::core.general'),
+                    'type' => 'dropDownSearchable',
+                    'creatable' => true,
+                    'multi' => true,
+                    'required' => true,
+                    'label' => trans('HCGalleries::gallery.tags'),
+                    'searchUrl' => route('admin.api.gallery.tag.options'),
+                ],
             $prefix . 'cover_id' =>
                 [
                     'tab' => trans('HCCore::core.general'),
@@ -125,15 +135,7 @@ class HCGalleryForm extends HCBaseForm
                     'new' => route('admin.api.form-manager', ['gallery.category-new']),
                     'searchUrl' => route('admin.api.gallery.category.options'),
                 ],
-            $prefix . 'tags' =>
-                [
-                    'tab' => trans('HCCore::core.general'),
-                    'type' => 'dropDownSearchable',
-                    'creatable' => true,
-                    'multi' => true,
-                    'label' => trans('HCGalleries::gallery.tags'),
-                    'searchUrl' => route('admin.api.gallery.tag.options'),
-                ],
+
             $prefix . 'warning_flag' =>
                 [
                     'tab' => trans('HCCore::core.general'),
@@ -189,6 +191,14 @@ class HCGalleryForm extends HCBaseForm
     {
         $form = $this->getStructureNew($prefix);
 
+        $form[$prefix . 'media_name'] =
+            [
+                'tab' => trans('HCGalleries::gallery.assets'),
+                'type' => 'singleLine',
+                'reequired' => 'true',
+                'label' => trans('HCGalleries::gallery.media_name'),
+            ];
+
         $form[$prefix . 'assets'] =
             [
                 'tab' => trans('HCGalleries::gallery.assets'),
@@ -206,6 +216,10 @@ class HCGalleryForm extends HCBaseForm
                     ],
                     $prefix . 'description' => [
                         'sendAs' => 'translation.description'
+                    ],
+                    $prefix . 'tags' => [],
+                    $prefix . 'media_name' => [
+                        'sendAs' => 'translation.label'
                     ]
                 ]
             ];

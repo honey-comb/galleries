@@ -202,9 +202,7 @@ class HCGalleryController extends HCBaseController
             return $this->response->error($e->getMessage());
         }
 
-        $request->session()->flash('success-message', trans('HCStarter::core.created', ['name' => $request->name]));
-
-        return $this->response->success('', null, route('admin.gallery.index'));
+        return $this->response->success('', null, route('admin.api.gallery.edit', $model->id));
     }
 
 

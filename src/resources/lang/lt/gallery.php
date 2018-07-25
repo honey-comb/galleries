@@ -18,4 +18,5 @@ return [
     "assets" => "Turinys",
     "stats" => "Statistika",
     "count" => "Nuotraukos",
+    "media_name" => "Nuotraukos pavadinimas",
 ];
