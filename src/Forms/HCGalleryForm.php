@@ -89,6 +89,7 @@ class HCGalleryForm extends HCBaseForm
                     'label' => trans('HCResource::resource.author'),
                     'new' => route('admin.api.form-manager', ['resource.author-new']),
                     'searchUrl' => route('admin.api.resource.author.options'),
+                    'required' => 1,
                 ],
             $prefix . 'published_at' =>
                 [
@@ -102,6 +103,7 @@ class HCGalleryForm extends HCBaseForm
                     'tab' => trans('HCCore::core.general'),
                     'type' => 'textArea',
                     'label' => trans('HCGalleries::gallery.description'),
+                    'required' => 1,
                 ],
             $prefix . 'cover_id' =>
                 [
