@@ -1,9 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
+/**
+ * Class DropGalleryTagTables
+ */
 class DropGalleryTagTables extends Migration
 {
     /**
@@ -11,10 +13,10 @@ class DropGalleryTagTables extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::drop('hc_gallery_tag_connection');
-        Schema::drop('hc_gallery_tag');
+        Schema::dropIfExists('hc_gallery_tag_connection');
+        Schema::dropIfExists('hc_gallery_tag');
     }
 
     /**
@@ -22,7 +24,7 @@ class DropGalleryTagTables extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
 
     }

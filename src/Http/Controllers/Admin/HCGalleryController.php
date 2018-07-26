@@ -4,12 +4,11 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Galleries\Http\Controllers\Admin;
 
-use HoneyComb\Galleries\Services\HCGalleryService;
-use HoneyComb\Galleries\Http\Requests\HCGalleryRequest;
-use HoneyComb\Galleries\Models\HCGallery;
-
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
+use HoneyComb\Galleries\Http\Requests\HCGalleryRequest;
+use HoneyComb\Galleries\Models\HCGallery;
+use HoneyComb\Galleries\Services\HCGalleryService;
 use HoneyComb\Galleries\Services\HCGalleryTagService;
 use HoneyComb\Starter\Helpers\HCFrontendResponse;
 use Illuminate\Database\Connection;
@@ -17,6 +16,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
+/**
+ * Class HCGalleryController
+ * @package HoneyComb\Galleries\Http\Controllers\Admin
+ */
 class HCGalleryController extends HCBaseController
 {
     use HCAdminListHeaders;
@@ -35,6 +38,7 @@ class HCGalleryController extends HCBaseController
      * @var HCFrontendResponse
      */
     private $response;
+
     /**
      * @var \HoneyComb\Galleries\Services\HCGalleryTagService
      */
@@ -145,7 +149,7 @@ class HCGalleryController extends HCBaseController
     {
         return $this->service->getRepository()->makeQuery()->with(
             [
-                'author' => function(HasOne $builder) {
+                'author' => function (HasOne $builder) {
                     $builder->select('id', 'name as label');
                 },
                 'creator',
@@ -226,7 +230,7 @@ class HCGalleryController extends HCBaseController
 
             return $this->response->error($e->getMessage());
         }
-        
+
         $request->session()->flash('success-message', trans('HCStarter::core.updated', ['name' => $request->name]));
 
         return $this->response->success('', null, route('admin.gallery.index'));

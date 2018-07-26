@@ -29,6 +29,7 @@ declare(strict_types = 1);
 
 namespace HoneyComb\Galleries\Forms;
 
+use HoneyComb\Galleries\Enum\HCGalleryStartPositionEnum;
 use HoneyComb\Starter\Enum\BoolEnum;
 use HoneyComb\Starter\Forms\HCBaseForm;
 
@@ -178,6 +179,15 @@ class HCGalleryForm extends HCBaseForm
                     'label' => trans('HCGalleries::gallery.hidden'),
                     'options' => BoolEnum::options(),
                     'required' => 1,
+                ],
+
+            $prefix . 'start_position' =>
+                [
+                    'tab' => trans('HCCore::core.general'),
+                    'type' => 'dropDownList',
+                    'label' => trans('HCGalleries::gallery.start_position'),
+                    'options' => HCGalleryStartPositionEnum::options(),
+                    'required' => 0,
                 ],
         ];
     }
