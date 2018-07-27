@@ -6,6 +6,11 @@ namespace HoneyComb\Galleries\Http\Controllers\Admin;
 
 use HoneyComb\Core\Http\Controllers\HCBaseController;
 use HoneyComb\Core\Http\Controllers\Traits\HCAdminListHeaders;
+use HoneyComb\Galleries\Events\Admin\Gallery\HCGalleryCreated;
+use HoneyComb\Galleries\Events\Admin\Gallery\HCGalleryForceDeleted;
+use HoneyComb\Galleries\Events\Admin\Gallery\HCGalleryRestored;
+use HoneyComb\Galleries\Events\Admin\Gallery\HCGalleryUpdated;
+use HoneyComb\Galleries\Events\Admin\Resource\HCGallerySoftDeleted;
 use HoneyComb\Galleries\Http\Requests\HCGalleryRequest;
 use HoneyComb\Galleries\Models\HCGallery;
 use HoneyComb\Galleries\Services\HCGalleryService;
@@ -206,6 +211,8 @@ class HCGalleryController extends HCBaseController
             return $this->response->error($e->getMessage());
         }
 
+        event(new HCGalleryCreated($model));
+
         return $this->response->success('', null, route('admin.api.gallery.edit', $model->id));
     }
 
@@ -233,6 +240,8 @@ class HCGalleryController extends HCBaseController
 
         $request->session()->flash('success-message', trans('HCStarter::core.updated', ['name' => $request->name]));
 
+        event(new HCGalleryUpdated($model));
+
         return $this->response->success('', null, route('admin.gallery.index'));
     }
 
@@ -249,7 +258,7 @@ class HCGalleryController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->service->getRepository()->deleteSoft($request->getListIds());
+            $deleted = $this->service->getRepository()->deleteSoft($request->getListIds());
 
             $this->connection->commit();
         } catch (\Throwable $exception) {
@@ -257,6 +266,9 @@ class HCGalleryController extends HCBaseController
 
             return $this->response->error($exception->getMessage());
         }
+
+        // TODO test
+        event(new HCGallerySoftDeleted($deleted));
 
         return $this->response->success('Successfully deleted');
     }
@@ -274,7 +286,7 @@ class HCGalleryController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->service->getRepository()->restore($request->getListIds());
+            $restored = $this->service->getRepository()->restore($request->getListIds());
 
             $this->connection->commit();
         } catch (\Throwable $exception) {
@@ -282,6 +294,9 @@ class HCGalleryController extends HCBaseController
 
             return $this->response->error($exception->getMessage());
         }
+
+        // TODO test
+        event(new HCGalleryRestored($restored));
 
         return $this->response->success('Successfully restored');
     }
@@ -299,7 +314,10 @@ class HCGalleryController extends HCBaseController
         $this->connection->beginTransaction();
 
         try {
-            $this->service->getRepository()->deleteForce($request->getListIds());
+            $deleted = $this->service->getRepository()->deleteForce($request->getListIds());
+
+            // TODO test
+            event(new HCGalleryForceDeleted($deleted));
 
             $this->connection->commit();
         } catch (\Throwable $exception) {
