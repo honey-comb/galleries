@@ -220,6 +220,7 @@ class HCGalleryForm extends HCBaseForm
                 'width' => 220,
                 'height' => 220,
                 'count' => 999999,
+                'previewSizes' => ['220x220'],       
                 'dependencies' => [
                     $prefix . 'author' => [
                         'sendAs' => 'author_id'
