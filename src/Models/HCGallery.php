@@ -105,7 +105,7 @@ class HCGallery extends HCUuidModel
      */
     public function assets(): BelongsToMany
     {
-        return $this->belongsToMany(HCResource::class, HCGalleryAsset::getTableName(), 'gallery_id', 'resource_id');
+        return $this->belongsToMany(HCResource::class, HCGalleryAsset::getTableName(), 'gallery_id', 'resource_id')->orderBy('sequence');
     }
 
     /**
